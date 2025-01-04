@@ -4,19 +4,18 @@
 
 using namespace std;
 
-// Función para comprobar la validez de la actualización 
-bool isValidUpdate(const vector<int>& update, const map<int, vector<int> >& graph) {
-    map<int, int> index; // Mapear página -> índice en la actualización
-    for (int i = 0; i < update.size(); ++i) {
-        index[update[i]] = i;
+bool esActualizacionValida(const vector<int>& actualizacion, const map<int, vector<int> >& grafo) {
+    map<int, int> indice;
+    for (int i = 0; i < actualizacion.size(); ++i) {
+        indice[actualizacion[i]] = i;
     }
-    for (map<int, vector<int> >::const_iterator it = graph.begin(); it != graph.end(); ++it) {
-        int page = it->first;
-        const vector<int>& neighbors = it->second;
-        for (int i = 0; i < neighbors.size(); ++i) {
-            int neighbor = neighbors[i];
-            if (index.count(page) && index.count(neighbor) && index[page] >= index[neighbor]) {
-                return false; // Regla violada
+    for (map<int, vector<int> >::const_iterator it = grafo.begin(); it != grafo.end(); ++it) {
+        int pagina = it->first;
+        const vector<int>& vecinos = it->second;
+        for (int i = 0; i < vecinos.size(); ++i) {
+            int vecino = vecinos[i];
+            if (indice.count(pagina) && indice.count(vecino) && indice[pagina] >= indice[vecino]) {
+                return false;
             }
         }
     }
@@ -24,59 +23,59 @@ bool isValidUpdate(const vector<int>& update, const map<int, vector<int> >& grap
 }
 
 int main() {
-    // Reglas de ordenamiento 
-    vector<pair<int, int> > rules;
-    rules.push_back(make_pair(47, 53));
-    rules.push_back(make_pair(97, 13));
-    rules.push_back(make_pair(97, 61));
-    rules.push_back(make_pair(97, 47));
-    rules.push_back(make_pair(75, 29));
-    rules.push_back(make_pair(61, 13));
-    rules.push_back(make_pair(75, 53));
-    rules.push_back(make_pair(29, 13));
-    rules.push_back(make_pair(97, 29));
-    rules.push_back(make_pair(53, 29));
-    rules.push_back(make_pair(61, 53));
-    rules.push_back(make_pair(97, 53));
-    rules.push_back(make_pair(61, 29));
-    rules.push_back(make_pair(47, 13));
-    rules.push_back(make_pair(75, 47));
-    rules.push_back(make_pair(97, 75));
-    rules.push_back(make_pair(47, 61));
-    rules.push_back(make_pair(75, 61));
-    rules.push_back(make_pair(47, 29));
-    rules.push_back(make_pair(75, 13));
-    rules.push_back(make_pair(53, 13));
-// Construcción del grafo
-    map<int, vector<int> > graph;
-    for (int i = 0; i < rules.size(); ++i) {
-        graph[rules[i].first].push_back(rules[i].second);
+    vector<pair<int, int> > reglas;
+    reglas.push_back(make_pair(47, 53));
+    reglas.push_back(make_pair(97, 13));
+    reglas.push_back(make_pair(97, 61));
+    reglas.push_back(make_pair(97, 47));
+    reglas.push_back(make_pair(75, 29));
+    reglas.push_back(make_pair(61, 13));
+    reglas.push_back(make_pair(75, 53));
+    reglas.push_back(make_pair(29, 13));
+    reglas.push_back(make_pair(97, 29));
+    reglas.push_back(make_pair(53, 29));
+    reglas.push_back(make_pair(61, 53));
+    reglas.push_back(make_pair(97, 53));
+    reglas.push_back(make_pair(61, 29));
+    reglas.push_back(make_pair(47, 13));
+    reglas.push_back(make_pair(75, 47));
+    reglas.push_back(make_pair(97, 75));
+    reglas.push_back(make_pair(47, 61));
+    reglas.push_back(make_pair(75, 61));
+    reglas.push_back(make_pair(47, 29));
+    reglas.push_back(make_pair(75, 13));
+    reglas.push_back(make_pair(53, 13));
+
+    map<int, vector<int> > grafo;
+    for (int i = 0; i < reglas.size(); ++i) {
+        grafo[reglas[i].first].push_back(reglas[i].second);
     }
 
-    vector<vector<int> > updates;
-    vector<int> update1; update1.push_back(75); update1.push_back(47); update1.push_back(61); update1.push_back(53); update1.push_back(29);
-    vector<int> update2; update2.push_back(97); update2.push_back(61); update2.push_back(53); update2.push_back(29); update2.push_back(13);
-    vector<int> update3; update3.push_back(75); update3.push_back(29); update3.push_back(13);
-    vector<int> update4; update4.push_back(75); update4.push_back(97); update4.push_back(47); update4.push_back(61); update4.push_back(53);
-    vector<int> update5; update5.push_back(61); update5.push_back(13); update5.push_back(29);
-    vector<int> update6; update6.push_back(97); update6.push_back(13); update6.push_back(75); update6.push_back(29); update6.push_back(47);
-    updates.push_back(update1);
-    updates.push_back(update2);
-    updates.push_back(update3);
-    updates.push_back(update4);
-    updates.push_back(update5);
-    updates.push_back(update6);
+    vector<vector<int> > actualizaciones;
+    vector<int> actualizacion1; actualizacion1.push_back(75); actualizacion1.push_back(47); actualizacion1.push_back(61); actualizacion1.push_back(53); actualizacion1.push_back(29);
+    vector<int> actualizacion2; actualizacion2.push_back(97); actualizacion2.push_back(61); actualizacion2.push_back(53); actualizacion2.push_back(29); actualizacion2.push_back(13);
+    vector<int> actualizacion3; actualizacion3.push_back(75); actualizacion3.push_back(29); actualizacion3.push_back(13);
+    vector<int> actualizacion4; actualizacion4.push_back(75); actualizacion4.push_back(97); actualizacion4.push_back(47); actualizacion4.push_back(61); actualizacion4.push_back(53);
+    vector<int> actualizacion5; actualizacion5.push_back(61); actualizacion5.push_back(13); actualizacion5.push_back(29);
+    vector<int> actualizacion6; actualizacion6.push_back(97); actualizacion6.push_back(13); actualizacion6.push_back(75); actualizacion6.push_back(29); actualizacion6.push_back(47);
+    actualizaciones.push_back(actualizacion1);
+    actualizaciones.push_back(actualizacion2);
+    actualizaciones.push_back(actualizacion3);
+    actualizaciones.push_back(actualizacion4);
+    actualizaciones.push_back(actualizacion5);
+    actualizaciones.push_back(actualizacion6);
 
-    int sumOfMiddles = 0;
+    int sumaDeCentros = 0;
 
-    for (int i = 0; i < updates.size(); ++i) {
-        if (isValidUpdate(updates[i], graph)) {
-            int middle = updates[i][updates[i].size() / 2];
-            sumOfMiddles += middle;
+    for (int i = 0; i < actualizaciones.size(); ++i) {
+        if (esActualizacionValida(actualizaciones[i], grafo)) {
+            int centro = actualizaciones[i][actualizaciones[i].size() / 2];
+            sumaDeCentros += centro;
         }
     }
 
-    cout << "Suma de páginas centrales: " << sumOfMiddles << endl;
+    cout << "Suma de páginas centrales: " << sumaDeCentros << endl;
 
     return 0;
 }
+
