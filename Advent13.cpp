@@ -57,7 +57,7 @@ int main() {
     if (costeMinimo == INT_MAX) {
         cout << "No es posible ganar el premio." << endl;
     } else {
-        cout << "El número mínimo de tokens para ganar el premio es: " << costeMinimo << endl;
+        cout << "El número mínimo de tokens para poder ganar el premio es: " << costeMinimo << endl;
     }
 
     return 0;
