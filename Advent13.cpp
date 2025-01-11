@@ -49,12 +49,12 @@ int main() {
         return 0;
     }
 
-    vector<int> dp(tokensTotales + 1, -1); // Inicializar con -1 (inaccesible)
-    dp[0] = 0; // No se necesita ningún coste para ganar 0 premios
+    vector<int> dp(tokensTotales + 1, -1);
+    dp[0] = 0;
 
     for (int coste : costesMinimos) {
         for (int j = tokensTotales; j >= coste; --j) {
-            if (dp[j - coste] != -1) { // Verificar que la posición anterior es alcanzable
+            if (dp[j - coste] != -1) {
                 dp[j] = max(dp[j], dp[j - coste] + 1);
             }
         }
