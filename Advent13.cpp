@@ -4,7 +4,7 @@
 #include <climits>
 using namespace std;
 
-int calcularCosteMinimo(int moverA_X, int moverA_Y, int costeA, int moverB_X, int moverB_Y, int costeB, int objetivoX, int objetivoY) {
+int calcCosteMinimo(int moverA_X, int moverA_Y, int costeA, int moverB_X, int moverB_Y, int costeB, int objetivoX, int objetivoY) {
     const int LIMITE = 100;
     int costeMinimo = INT_MAX;
 
@@ -38,7 +38,7 @@ int main() {
         int moverA_X, moverA_Y, costeA, moverB_X, moverB_Y, costeB, objetivoX, objetivoY;
         tie(moverA_X, moverA_Y, costeA, moverB_X, moverB_Y, costeB, objetivoX, objetivoY) = maquina;
 
-        int costeMinimo = calcularCosteMinimo(moverA_X, moverA_Y, costeA, moverB_X, moverB_Y, costeB, objetivoX, objetivoY);
+        int costeMinimo = calcCosteMinimo(moverA_X, moverA_Y, costeA, moverB_X, moverB_Y, costeB, objetivoX, objetivoY);
         if (costeMinimo != -1) {
             costesMinimos.push_back(costeMinimo);
         }
