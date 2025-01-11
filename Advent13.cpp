@@ -1,63 +1,81 @@
 #include <iostream>
-#include <queue>
-#include <unordered_set>
+#include <vector>
+#include <tuple>
 #include <climits>
 using namespace std;
 
-struct Nodo {
-    int x, y, coste, contador_a, contador_b;
-    Nodo(int x, int y, int coste, int contador_a, int contador_b)
-        : x(x), y(y), coste(coste), contador_a(contador_a), contador_b(contador_b) {}
-};
+int calcularCosteMinimo(int moverA_X, int moverA_Y, int costeA, int moverB_X, int moverB_Y, int costeB, int objetivoX, int objetivoY) {
+    const int LIMITE = 100;
+    int costeMinimo = INT_MAX;
 
-int obtenerCosteMinimo(int objetivoX, int objetivoY, const int moverA_X, const int moverA_Y, int costeA, const int moverB_X, const int moverB_Y, int costeB) {
-    queue<Nodo> q;
-    unordered_set<string> visitados;
+    for (int a = 0; a <= LIMITE; ++a) {
+        for (int b = 0; b <= LIMITE; ++b) {
+            int x = a * moverA_X + b * moverB_X;
+            int y = a * moverA_Y + b * moverB_Y;
 
-    q.push(Nodo(0, 0, 0, 0, 0));
-    visitados.insert("0,0");
-
-    while (!q.empty()) {
-        Nodo actual = q.front();
-        q.pop();
-
-        if (actual.x == objetivoX && actual.y == objetivoY) {
-            return actual.coste;
-        }
-
-        if (actual.contador_a < 100) {
-            int nuevoX = actual.x + moverA_X;
-            int nuevoY = actual.y + moverA_Y;
-            if (visitados.find(to_string(nuevoX) + "," + to_string(nuevoY)) == visitados.end()) {
-                q.push(Nodo(nuevoX, nuevoY, actual.coste + costeA, actual.contador_a + 1, actual.contador_b));
-                visitados.insert(to_string(nuevoX) + "," + to_string(nuevoY));
-            }
-        }
-
-        if (actual.contador_b < 100) {
-            int nuevoX = actual.x + moverB_X;
-            int nuevoY = actual.y + moverB_Y;
-            if (visitados.find(to_string(nuevoX) + "," + to_string(nuevoY)) == visitados.end()) {
-                q.push(Nodo(nuevoX, nuevoY, actual.coste + costeB, actual.contador_a, actual.contador_b + 1));
-                visitados.insert(to_string(nuevoX) + "," + to_string(nuevoY));
+            if (x == objetivoX && y == objetivoY) {
+                int coste = a * costeA + b * costeB;
+                costeMinimo = min(costeMinimo, coste);
             }
         }
     }
 
-    return INT_MAX;
+    return (costeMinimo == INT_MAX) ? -1 : costeMinimo;
 }
 
 int main() {
-    int moverA_X = 94, moverA_Y = 34, costeA = 3;
-    int moverB_X = 22, moverB_Y = 67, costeB = 1;
-    int objetivoX = 8400, objetivoY = 5400;
+    vector<tuple<int, int, int, int, int, int, int, int>> maquinas = {
+        {94, 34, 3, 22, 67, 1, 8400, 5400},
+        {26, 66, 3, 67, 21, 1, 12748, 12176},
+        {17, 86, 3, 84, 37, 1, 7870, 6450},
+        {69, 23, 3, 27, 71, 1, 18641, 10279}
+    };
 
-    int costeMinimo = obtenerCosteMinimo(objetivoX, objetivoY, moverA_X, moverA_Y, costeA, moverB_X, moverB_Y, costeB);
+    int tokensTotales = 5000;
 
-    if (costeMinimo == INT_MAX) {
-        cout << "No es posible ganar el premio." << endl;
+    vector<int> costesMinimos;
+    for (const auto& maquina : maquinas) {
+        int moverA_X, moverA_Y, costeA, moverB_X, moverB_Y, costeB, objetivoX, objetivoY;
+        tie(moverA_X, moverA_Y, costeA, moverB_X, moverB_Y, costeB, objetivoX, objetivoY) = maquina;
+
+        int costeMinimo = calcularCosteMinimo(moverA_X, moverA_Y, costeA, moverB_X, moverB_Y, costeB, objetivoX, objetivoY);
+        if (costeMinimo != -1) {
+            costesMinimos.push_back(costeMinimo);
+        }
+    }
+
+    if (costesMinimos.empty()) {
+        cout << "No hay ninguna máquina en la que sea posible ganar un premio." << endl;
+        return 0;
+    }
+
+    vector<int> dp(tokensTotales + 1, -1); // Inicializar con -1 (inaccesible)
+    dp[0] = 0; // No se necesita ningún coste para ganar 0 premios
+
+    for (int coste : costesMinimos) {
+        for (int j = tokensTotales; j >= coste; --j) {
+            if (dp[j - coste] != -1) { // Verificar que la posición anterior es alcanzable
+                dp[j] = max(dp[j], dp[j - coste] + 1);
+            }
+        }
+    }
+
+    int maxPremios = 0;
+    int costeMinimoTotal = INT_MAX;
+    for (int j = 0; j <= tokensTotales; ++j) {
+        if (dp[j] > maxPremios) {
+            maxPremios = dp[j];
+            costeMinimoTotal = j;
+        } else if (dp[j] == maxPremios && j < costeMinimoTotal) {
+            costeMinimoTotal = j;
+        }
+    }
+
+    if (maxPremios == 0) {
+        cout << "No es posible ganar ningún premio." << endl;
     } else {
-        cout << "El número mínimo de tokens para poder ganar el premio es: " << costeMinimo << endl;
+        cout << "Número máximo de premios posibles: " << maxPremios << endl;
+        cout << "Coste mínimo total para ganar esos premios: " << costeMinimoTotal << " tokens." << endl;
     }
 
     return 0;
