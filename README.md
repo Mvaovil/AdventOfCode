@@ -1,5 +1,6 @@
 # AdventOfCode
 Advent13
+
 Este código nos pedia calcular el mínimo de tokens que debemos gastar para ganar todos los premios posibles. Cada máquina tienes dos botones A y B que mueven la garra en X e Y. Moverlo con A cuesta 3 fichas y con B cuesta 1. La tarea es calcular la cantidad mínima de fichas necesarias para que la garra se alinee con el premio en las coordenadas X y Y dadas para cada máquina. Lo máximo que puedes presionar los botones es 100 veces, por ello, debes maximizar la cantidad de premios ganados. El objetivo es obtener el mayor número de premios posibles y determinar cuántas fichas en total gastarías para obtener esos premios.
 
 Hemos escogido resolverlo mediante programacion dinámica ya que nos permitía estructurar el problema en subproblemas que se resolvian de manera más óptima. Por ello, decidimos dar un estado a cada máquina y usar la programacion dinámica para calcular el coste mínimo acumulado mientras vamos maximizando la cantidad de premios obtenidos. 
