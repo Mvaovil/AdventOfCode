@@ -35,7 +35,7 @@ int divideYVenceras(vector<int>& lista1, vector<int>& lista2) {
 
 int main() {
     // Abrir el archivo input.txt
-    ifstream archivo("input.txt");
+    ifstream archivo("input1.txt");
     string linea;
     
     vector<int> lista1;
