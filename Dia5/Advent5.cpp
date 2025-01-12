@@ -1,94 +1,85 @@
 #include <iostream>
 #include <vector>
-#include <map> 
+#include <map>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
-// Con esta unción, verificamos si una actualización de páginas es válida según las reglas del grafo
-bool esActualizacionValida(const vector<int>& actualizacion, const map<int, vector<int> >& grafo) {
-    // Creamos un mapa que almacene el índice de cada página en la actualización
+// Función para verificar si una actualización es válida según las reglas del grafo
+bool actVal(const vector<int>& actualizacion, const map<int, vector<int>>& grafo) {
+    // Crear un mapa que almacena el índice de cada página en la actualización
     map<int, int> indice;
     for (int i = 0; i < actualizacion.size(); ++i) {
-        indice[actualizacion[i]] = i;  // Asocia la página a su índice en la actualización
+        indice[actualizacion[i]] = i;
     }
-    
-    // Recorremos todas las páginas en el grafo y verificamos si las relaciones entre ellas son válidas
-    for (map<int, vector<int> >::const_iterator it = grafo.begin(); it != grafo.end(); ++it) {
-        int pagina = it->first;
-        const vector<int>& vecinos = it->second;
-        
-        // Comprobamos la relación de cada página con sus vecinos
-        for (int i = 0; i < vecinos.size(); ++i) {
-            int vecino = vecinos[i];
-            
-            // Si ambas páginas (la actual y su vecino) están presentes en la actualización, verificamos si la página esta antésacristía que la de su vecino
+
+    // Verificar todas las dependencias del grafo
+    for (const auto& entrada : grafo) {
+        int pagina = entrada.first;
+        const vector<int>& vecinos = entrada.second;
+
+        for (int vecino : vecinos) {
+            // Si ambas páginas están en la actualización, comprobar el orden
             if (indice.count(pagina) && indice.count(vecino) && indice[pagina] >= indice[vecino]) {
-                return false;  // Si la página aparece después de su vecino, la actualización no es válida
+                return false; // No se cumple la dependencia
             }
         }
     }
-    return true;  // Si todas las relaciones son válidas, la actualización es válida
+    return true; // Todas las dependencias son válidas
 }
 
 int main() {
-    // Definir las reglas que especifican las relaciones entre las páginas según el ejercicio propuesto 
-    vector<pair<int, int> > reglas;
-    reglas.push_back(make_pair(47, 53));
-    reglas.push_back(make_pair(97, 13));
-    reglas.push_back(make_pair(97, 61));
-    reglas.push_back(make_pair(97, 47));
-    reglas.push_back(make_pair(75, 29));
-    reglas.push_back(make_pair(61, 13));
-    reglas.push_back(make_pair(75, 53));
-    reglas.push_back(make_pair(29, 13));
-    reglas.push_back(make_pair(97, 29));
-    reglas.push_back(make_pair(53, 29));
-    reglas.push_back(make_pair(61, 53));
-    reglas.push_back(make_pair(97, 53));
-    reglas.push_back(make_pair(61, 29));
-    reglas.push_back(make_pair(47, 13));
-    reglas.push_back(make_pair(75, 47));
-    reglas.push_back(make_pair(97, 75));
-    reglas.push_back(make_pair(47, 61));
-    reglas.push_back(make_pair(75, 61));
-    reglas.push_back(make_pair(47, 29));
-    reglas.push_back(make_pair(75, 13));
-    reglas.push_back(make_pair(53, 13));
-
-    // Creamos el grafo representando las relaciones de dependencias entre páginas
-    map<int, vector<int> > grafo;
-    for (int i = 0; i < reglas.size(); ++i) {
-        grafo[reglas[i].first].push_back(reglas[i].second);  // Añadimos las relaciones al grafo
+    // Abrir el archivo de entrada
+    ifstream archivo("input.txt");
+    if (!archivo.is_open()) {
+        cerr << "No se pudo abrir el archivo 'input.txt'" << endl;
+        return 1;
     }
 
-    // Definimos una lista de actualizaciones que contienen secuencias de páginas
-    vector<vector<int> > actualizaciones;
-    vector<int> actualizacion1; actualizacion1.push_back(75); actualizacion1.push_back(47); actualizacion1.push_back(61); actualizacion1.push_back(53); actualizacion1.push_back(29);
-    vector<int> actualizacion2; actualizacion2.push_back(97); actualizacion2.push_back(61); actualizacion2.push_back(53); actualizacion2.push_back(29); actualizacion2.push_back(13);
-    vector<int> actualizacion3; actualizacion3.push_back(75); actualizacion3.push_back(29); actualizacion3.push_back(13);
-    vector<int> actualizacion4; actualizacion4.push_back(75); actualizacion4.push_back(97); actualizacion4.push_back(47); actualizacion4.push_back(61); actualizacion4.push_back(53);
-    vector<int> actualizacion5; actualizacion5.push_back(61); actualizacion5.push_back(13); actualizacion5.push_back(29);
-    vector<int> actualizacion6; actualizacion6.push_back(97); actualizacion6.push_back(13); actualizacion6.push_back(75); actualizacion6.push_back(29); actualizacion6.push_back(47);
-    actualizaciones.push_back(actualizacion1);
-    actualizaciones.push_back(actualizacion2);
-    actualizaciones.push_back(actualizacion3);
-    actualizaciones.push_back(actualizacion4);
-    actualizaciones.push_back(actualizacion5);
-    actualizaciones.push_back(actualizacion6);
+    string linea;
+    map<int, vector<int>> grafo;  // Grafo que representa las relaciones de dependencia
+    vector<vector<int>> actualizaciones;  // Lista de actualizaciones leídas del archivo
 
-    int sumaDeCentros = 0;
+    // Leer el archivo línea por línea
+    while (getline(archivo, linea)) {
+        if (linea.empty()) continue; // Ignorar líneas vacías
 
-    // Recorremos todas las actualizaciones y verificamos si son válidas
-    for (int i = 0; i < actualizaciones.size(); ++i) {
-        if (esActualizacionValida(actualizaciones[i], grafo)) {
-            // Si la actualización es válida, sumar el valor de la página central
-            int centro = actualizaciones[i][actualizaciones[i].size() / 2];
-            sumaDeCentros += centro;
+        if (linea.find("|") != string::npos) {
+            // Si la línea contiene una relación (X|Y), añadirla al grafo
+            stringstream ss(linea);
+            int x, y;
+            ss >> x;
+            ss.ignore(); // Ignorar el carácter '|'
+            ss >> y;
+            grafo[x].push_back(y); // Añadir la relación al grafo
+        } else {
+            // Si no contiene una relación, procesar como una actualización
+            stringstream ss(linea);
+            vector<int> actualizacion;
+            int numero;
+            while (ss >> numero) {
+                actualizacion.push_back(numero); // Añadir página a la actualización
+                if (ss.peek() == ',') ss.ignore(); // Ignorar comas
+            }
+            actualizaciones.push_back(actualizacion); // Guardar la actualización
         }
     }
 
-    // Imprimir la suma de las páginas centrales de las actualizaciones válidas (Debería salir 143)
-    cout << "Suma de páginas centrales: " << sumaDeCentros << endl;
+    archivo.close(); // Cerrar el archivo después de leerlo
+
+    int suma = 0; // Inicializar la suma de las páginas centrales de actualizaciones válidas
+
+    // Procesar cada actualización
+    for (const auto& actualizacion : actualizaciones) {
+        if (actVal(actualizacion, grafo)) {
+            // Si la actualización es válida, sumar el valor de su página central
+            int centro = actualizacion[actualizacion.size() / 2];
+            suma += centro;
+        }
+    }
+
+    cout << "Suma de páginas centrales: " << suma << endl;
 
     return 0;
 }
