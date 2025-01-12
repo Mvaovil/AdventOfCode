@@ -2,6 +2,8 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -12,7 +14,7 @@ int calcularDistancia(const vector<int>& lista1, const vector<int>& lista2, int 
         return abs(lista1[inicio] - lista2[inicio]);
     }
     
-    // Caso recursivo, que debemos dividir la lista basicamente
+    // Caso recursivo, que debemos dividir la lista básicamente
     int mitad = (inicio + fin) / 2;
     int distanciaIzquierda = calcularDistancia(lista1, lista2, inicio, mitad);
     int distanciaDerecha = calcularDistancia(lista1, lista2, mitad + 1, fin);
@@ -32,16 +34,39 @@ int divideYVenceras(vector<int>& lista1, vector<int>& lista2) {
 }
 
 int main() {
-    // Definir las dos listas de enteros para comprobar si funciona
-    vector<int> lista1 = {3, 4, 2, 1, 3, 3};
-    vector<int> lista2 = {4, 3, 5, 3, 9, 3};
+    // Abrir el archivo input.txt
+    ifstream archivo("input.txt");
+    string linea;
+    
+    vector<int> lista1;
+    vector<int> lista2;
+    
+    // Leer las líneas del archivo
+    while (getline(archivo, linea)) {
+        stringstream ss(linea);
+        int num;
+        
+        // Leer cada número en la línea y agregarlo a las listas
+        while (ss >> num) {
+            if (lista1.size() < lista2.size()) {
+                lista1.push_back(num);
+            } else {
+                lista2.push_back(num);
+            }
+        }
+    }
+    
+    // Asegurarnos de que ambas listas tengan el mismo tamaño
+    if (lista1.size() != lista2.size()) {
+        cout << "Las listas no tienen el mismo tamaño." << endl;
+        return 1;
+    }
     
     // Llamar a la función divideYVenceras para obtener el resultado
     int resultado = divideYVenceras(lista1, lista2);
     
-    // Imprimir el resultado (debería ser 11)
+    // Imprimir el resultado (debería ser 11 si las listas son las mismas como en el ejemplo anterior)
     cout << "La distancia total es: " << resultado << endl;
     
     return 0;
 }
-
