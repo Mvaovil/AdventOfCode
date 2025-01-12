@@ -1,3 +1,6 @@
+Advent5
+
+
 En este problema, el código verifica si las actualizaciones de páginas de un manual siguen un orden específico según las reglas de precedencia. Si una actualización está en el orden correcto, calcula la página en el medio de la lista y suma esos valores de todas las actualizaciones válidas. El resultado final es la suma de los números de página medios de las actualizaciones correctas.
 
 Hemos elegido este problema ya que le veíamos una dificultad extra (al menos para nosotros) ya que no teníamos ni idea de como realizar el código. Al leerlo y verlo pensamos que podría tratarse de un problema de tablas hash para almacenar y acceder rápidamente a las relaciones de precedencia entre las páginas, así como para optimizar el proceso de verificación del orden en las actualizaciones. Pero al leerlo detalladamente vimos que era inviable ya que el problema requeria mantenermelos el orden entre los elementos, y en este aspecto las tablas no son muy adecuadas. 
