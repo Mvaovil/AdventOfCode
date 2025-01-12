@@ -4,18 +4,18 @@
 #include <climits>
 using namespace std;
 
-// Calcula el coste mínimo para alcanzar el objetivo usando combinaciones de movimientos
+// Función que calcula el coste mínimo para alcanzar el objetivo usando combinaciones de movimientos
 int calcCosteMinimo(int moverA_X, int moverA_Y, int costeA, int moverB_X, int moverB_Y, int costeB, int objetivoX, int objetivoY) {
-    const int LIMITE = 100;  // Límite de movimientos
-    int costeMinimo = INT_MAX;  // Inicializa el coste como infinito
+    const int LIMITE = 100;  // Límite de movimientos (Actualizado a 100)
+    int costeMinimo = INT_MAX;  // Inicializa el coste como infinito para que no surgan problemas
 
-    // Recorre todas las combinaciones posibles de movimientos
+    // Recorre todas las combinaciones posibles de movimientos 
     for (int a = 0; a <= LIMITE; ++a) {
         for (int b = 0; b <= LIMITE; ++b) {
             int x = a * moverA_X + b * moverB_X;
             int y = a * moverA_Y + b * moverB_Y;
 
-            // Si coincide con el objetivo, calcula el coste
+            // Si coincide con el objetivo pues calcula el coste
             if (x == objetivoX && y == objetivoY) {
                 int coste = a * costeA + b * costeB;
                 costeMinimo = min(costeMinimo, coste);
@@ -23,7 +23,6 @@ int calcCosteMinimo(int moverA_X, int moverA_Y, int costeA, int moverB_X, int mo
         }
     }
 
-    // Retorna el coste mínimo encontrado, o -1 si no se encontró
     return (costeMinimo == INT_MAX) ? -1 : costeMinimo;
 }
 
@@ -55,7 +54,7 @@ int main() {
         return 0;
     }
 
-    // Inicializa la DP
+    // Inicializa el vector dp
     vector<int> dp(tokensTotales + 1, -1);
     dp[0] = 0;
 
