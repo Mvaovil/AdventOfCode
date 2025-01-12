@@ -65,7 +65,7 @@ int main() {
     // Llamar a la función divideYVenceras para obtener el resultado
     int resultado = divideYVenceras(lista1, lista2);
     
-    // Imprimir el resultado (debería ser 11 si las listas son las mismas como en el ejemplo anterior)
+    // Imprimir el resultado 
     cout << "La distancia total es: " << resultado << endl;
     
     return 0;
