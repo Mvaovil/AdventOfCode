@@ -15,4 +15,4 @@ Este código resuelve el problema utilizando un grafo para gestionar las depende
 
 Este día ha sido el más complicado, sinceramente no pensábamos que fuésemos a ser capaces de realizar este código correctamente ya que lo dejamos a medias y sin saber muy bien por donde tirar, pero al haber finalizado los demás decidimos intentar terminar este ya por una cuestión de orgullo. Hemos aprendido a implementar el grafo en este tipo de problemas y personalmente a asentar un poco más las nociones sintácticas de este lenguaje ya que aunque llegó un punto en el que sabíamos lo que queriamos hacer nos costaba traducirlo a lenguaje de programación en ciertos momentos.
 
-
+Para compilar este código debes tener el input5.txt en la misma carpeta que el programa y ejecutar g++ -o Advent5 Advent5.cpp y luego ./Advent5
