@@ -31,7 +31,7 @@ bool actVal(const vector<int>& actualizacion, const map<int, vector<int>>& grafo
 
 int main() {
     // Abrir el archivo de entrada
-    ifstream archivo("input.txt");
+    ifstream archivo("input5.txt");
     if (!archivo.is_open()) {
         cerr << "No se pudo abrir el archivo 'input.txt'" << endl;
         return 1;
