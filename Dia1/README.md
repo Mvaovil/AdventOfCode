@@ -14,3 +14,5 @@ Finalmente, la función principal imprime la distancia total entre las dos lista
 Realizando el código nos encontramos con dificultades como que pusimos inicio>fin en el primer if en vez de igual y esto provocó que nuestra codición base no fuese la correcta. Ademas, al principio, pensamos que la función debería devolver una diferencia acumulada de distancias en lugar de una suma de distancias, y restamos la distanciaIzquierda con la distanciaDerecha, por eso nos daba un resultado erroneo el código.
 
 Coincidimos en que tras haber realizado este problema hemos entendido como aplicar bien el divideyvencerás y su tan útilizado uso para problemas de este caso. Ademas, ya sabemos identificar bien como se hace un caso base, cosa que en su día nos costó verlo con claridad.
+
+Para compilar este código debes tener el input1.txt en la misma carpeta que el Advent1.cpp y ejecutar g++ -o Advent1 Advent1.cpp y luego ./Advent1
