@@ -11,3 +11,5 @@ Durante la realcización del código nos surgiéron problemas como no igual esta
 El código utiliza tablas hash para optimizar la verificación de diseños de toallas que pueden formarse con patrones disponibles. La función recursiva "formar" evalúa si un diseño puede construirse descomponiéndolo paso a paso con patrones que sean prefijos del diseño. Cada resultado (si un diseño o subdiseño es posible) se almacena en una tabla hash (memo), lo que evita recalcularlo si vuelve a encontrarse.
 
 En el programa principal, para cada diseño, se llama a formar y se cuenta cuántos son posibles. La tabla hash permite recuperar resultados ya calculados en tiempo constante, reduciendo significativamente el número de operaciones necesarias. Esto hace que el código sea eficiente, especialmente para listas grandes de patrones y diseños. Al final, se imprime cuántos diseños pueden formarse.
+
+Tras haber finalizado este día, aprendimos a implementar correctamente las tablas hash, aunque nos costó lo suyo. Eso sí, son realmente útiles para evitar estar calculando todo el rato.
