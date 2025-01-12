@@ -11,6 +11,6 @@ El algoritmo utiliza divide y vencerás para dividir las listas de manera recurs
 
 Finalmente, la función principal imprime la distancia total entre las dos listas.
 
-Realizando el código nos encontramos con dificultades 
+Realizando el código nos encontramos con dificultades como que pusimos inicio>fin en el primer if en vez de igual y esto provocó que nuestra codición base no fuese la correcta.
 
 
